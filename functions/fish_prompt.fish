@@ -16,19 +16,31 @@ function fish_prompt
   end
 
   # Setup colors
-  set -l hostcolor (set_color (uname -n | md5sum | cut -f1 -d' ' | tr -d '\n' | tail -c6))
-  set -l normal (set_color normal)
-  set -l white (set_color FFFFFF)
-  set -l turquoise (set_color 5fdfff)
-  set -l orange (set_color df5f00)
-  set -l hotpink (set_color df005f)
-  set -l blue (set_color blue)
-  set -l limegreen (set_color 87ff00)
-  set -l purple (set_color af5fff)
+  set -l hostcolor (set_color (uname -n | md5 -r | cut -f1 -d' ' | tr -d '\n' | tail -c6))
+  if [ $THEME = "dark" ]
+      set -l normal (set_color normal)
+      set -l white (set_color FFFFFF)
+      set -l turquoise (set_color 5fdfff)
+      set -l orange (set_color df5f00)
+      set -l hotpink (set_color df005f)
+      set -l blue (set_color blue)
+      set -l limegreen (set_color 87ff00)
+      set -l purple (set_color af5fff)
+  else
+      set -l normal (set_color normal)
+      set -l white (set_color 544d40)
+      set -l turquoise (set_color 147baa)
+      set -l orange (set_color df5f00)
+      set -l hotpink (set_color df005f)
+      set -l blue (set_color blue)
+      set -l limegreen (set_color 477c0b)
+      set -l purple (set_color af5fff)
+
+  end
 
   # Configure __fish_git_prompt
   set -g __fish_git_prompt_char_stateseparator ' '
-  set -g __fish_git_prompt_color 5fdfff
+  set -g __fish_git_prompt_color 147baa
   set -g __fish_git_prompt_color_flags df5f00
   set -g __fish_git_prompt_color_prefix white
   set -g __fish_git_prompt_color_suffix white
@@ -75,10 +87,18 @@ function fish_prompt
           set_color red
           echo -n 'n'
         case insert
-          set_color green
+          if [ $THEME = "dark" ]
+              set_color green
+          else
+              set_color 477c0b
+          end;
           echo -n 'i'
         case replace_one
-          set_color green
+          if [ $THEME = "dark" ]
+              set_color green
+          else
+              set_color 477c0b
+          end;
           echo -n 'r'
         case replace
           set_color cyan
